@@ -12,6 +12,7 @@ const CB_TIMING = "cubic-bezier(0.25, -0.75, 0.50, 1.75)";
 const INTERVAL_TIME = 5 * 60 * 1000;
 const IDLE_NECK_DECREMENT = -5;
 const IDLE_OPACITY = 0.25;
+const SCALE = 3;
 
 const headName = new URL(location.href).searchParams.get("skin");
 const decreaseEnabled = new URL(location.href).searchParams.get("decrease") === "1";
@@ -30,20 +31,19 @@ class DiploPollo extends HTMLElement {
   static get styles() {
     return /* css */`
       :host {
-        --scale: scale(3);
+        --scale: scale(${SCALE});
         --image-head: url("images/skins/original.png");
-      }
-
-      .container {
-        width: 32px;
-        transform: var(--scale);
-        transform-origin: 0 100%;
-        image-rendering: pixelated;
-        opacity: var(--opacity, 1);
-        transition: opacity 0.3s;
         position: absolute;
         bottom: 0;
         left: 0;
+        transform: var(--scale);
+        transform-origin: 0 100%;
+      }
+
+      .container {
+        image-rendering: pixelated;
+        opacity: var(--opacity, 1);
+        transition: opacity 0.3s;
       }
 
       diplo-head {
@@ -56,7 +56,6 @@ class DiploPollo extends HTMLElement {
         height: 25px;
         background: url("images/body.png");
         animation: idle 400ms infinite steps(4);
-        position: relative;
       }
 
       @keyframes idle {
@@ -110,12 +109,10 @@ class DiploPollo extends HTMLElement {
     const width = window.innerWidth;
     const height = window.innerHeight;
 
-    // For some reason when entering a value, the .neck class is multiplied
-    // by 3 of the entered value, temporary solution to obtain the real size.
-    const updateSize = size * 3;
+    const updateSize = size * SCALE;
 
     if (updateSize > height) {
-      const getContainer = this.shadowRoot.querySelector(".container");
+      const getContainer = document.querySelector(".container");
       const cloneDiploHead = this.shadowRoot.querySelector("diplo-head").cloneNode(true);
 
       getContainer.appendChild(cloneDiploHead);
