@@ -79,6 +79,7 @@ class DiploPollo extends HTMLElement {
     this.updateNeck();
     confettiEnabled && !silent && this.doConfetti();
     this.activity++;
+    this.cloneDiploHead(this.neckSize);
     this.setOpacity(1);
     this.playSound();
   }
@@ -102,6 +103,22 @@ class DiploPollo extends HTMLElement {
       const audio = AUDIOS[index];
       audio.currentTime = 0;
       audio.play();
+    }
+  }
+
+  cloneDiploHead(size) {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    // For some reason when entering a value, the .neck class is multiplied
+    // by 3 of the entered value, temporary solution to obtain the real size.
+    const updateSize = size * 3;
+
+    if (updateSize > height) {
+      const getContainer = this.shadowRoot.querySelector(".container");
+      const cloneDiploHead = this.shadowRoot.querySelector("diplo-head").cloneNode(true);
+
+      getContainer.appendChild(cloneDiploHead);
     }
   }
 
