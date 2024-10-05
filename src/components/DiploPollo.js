@@ -14,7 +14,8 @@ const IDLE_NECK_DECREMENT = -5;
 const IDLE_OPACITY = 0.25;
 const SCALE = 3;
 
-const headName = new URL(location.href).searchParams.get("skin");
+const originalHeadName = "original";
+const headName = new URL(location.href).searchParams.get("skin") || originalHeadName;
 const decreaseEnabled = new URL(location.href).searchParams.get("decrease") === "1";
 const ghostEnabled = new URL(location.href).searchParams.get("ghost") === "1";
 const soundEnabled = new URL(location.href).searchParams.get("sound") === "1";
